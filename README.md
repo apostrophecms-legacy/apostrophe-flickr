@@ -1,6 +1,7 @@
 # apostrophe-flickr-sets
 [![NPM](https://nodei.co/npm/apostrophe-flickr-sets.png?downloads=true)](https://nodei.co/npm/apostrophe-flickr-sets/)
 
+<a href="http://apostrophenow.org/"><img src="https://raw.github.com/punkave/jquery-bottomless/master/logos/logo-box-madefor.png" align="right" /></a>
 apostrophe-flickr-sets is a widget for the [Apostrophe](http://github.com/punkave/apostrophe) content management system. Apostrophe lets you display a set-based Flickr widget in any content area. apostrophe-flickr-sets is particularly named to allow for a more robust apostrophe-flickr module in the future.
 
 ## API Key
@@ -10,3 +11,5 @@ In order to make calls to the Flickr API, you'll need to have an API token, avai
 - [x] Publish to NPM
 - [x] Better caching to not kill the API
 - [ ] Write some tests?
+
+<a href="http://punkave.com/"><img src="https://raw.github.com/punkave/jquery-bottomless/master/logos/logo-box-builtby.png" /></a>
