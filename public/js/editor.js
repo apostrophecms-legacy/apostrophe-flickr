@@ -9,6 +9,9 @@ function AposFlickrWidgetEditor(options) {
   if (!options.messages.missing) {
     options.messages.missing = 'Paste in a URL for your Flickr set first.';
   }
+  if (!options.messages.incorrect) {
+    options.messages.incorrect = 'The URL that you pasted is not a Flick Set URL.';
+  }
 
   self.type = 'flickr';
   options.template = '.apos-flickr-editor';
@@ -16,7 +19,6 @@ function AposFlickrWidgetEditor(options) {
   AposWidgetEditor.call(self, options);
 
   // What are these doing?
-  // self.prePreview = getSet;
   self.preSave = getSet;
 
   self.afterCreatingEl = function() {
@@ -33,12 +35,13 @@ function AposFlickrWidgetEditor(options) {
   console.log(self);
 
   function getSet(callback) {
-    // console.log("The data say", self.data);
-    // console.log("The self says", self);
     self.exists = !!self.$setUrl.val();
     if (self.exists) {
       self.data.setUrl = self.$setUrl.val();
       self.data.limit = self.$limit.val();
+    }
+    if (!self.$setUrl.val().match(/sets\/([0-9]+)/)) {
+      return alert(options.messages.incorrect);
     }
     return callback();
   }
