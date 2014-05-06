@@ -7,6 +7,6 @@ apostrophe-flickr-sets is a widget for the [Apostrophe](http://github.com/punkav
 In order to make calls to the Flickr API, you'll need to have an API token, available [here]("https://www.flickr.com/services/apps/create/"). While Flickr is generous about their rate limit (~3600 queries/hr), we're caching pretty heavily by default (updating every 20 minutes). If you need a shorter caching period, simply pass `lifetime: [# in ms]` to your `apostrophe-flickr-sets` in your app.js.
 
 ## TO-DO
-- [X] Publish to NPM
-- [X] Better caching to not kill the API
+- [x] Publish to NPM
+- [x] Better caching to not kill the API
 - [ ] Write some tests?
