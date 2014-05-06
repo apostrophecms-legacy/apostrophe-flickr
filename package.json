@@ -1,0 +1,26 @@
+{
+  "name": "apostrophe-flickr-sets",
+  "version": "0.5.0",
+  "description": "Adds a Flickr set widget to the Apostrophe content management system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/punkave/apostrophe-flickr-sets.git"
+  },
+  "keywords": [
+    "apostrophe",
+    "flickr",
+    "widget"
+  ],
+  "author": "P'unk Avenue punkave.com",
+  "license": "MIT",
+  "dependencies": {
+    "extend": "~1.1.3",
+    "lodash": "^2.4.1",
+    "node-flickr": "0.0.1"
+  },
+  "devDependencies": {}
+}
