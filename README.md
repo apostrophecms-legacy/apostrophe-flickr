@@ -10,6 +10,7 @@ In order to make calls to the Flickr API, you'll need to have an API token, avai
 ## TO-DO
 - [x] Publish to NPM
 - [x] Better caching to not kill the API
+- [ ] Switch loader logic to browser-side player (like Twitter)
 - [ ] Write some tests?
 
 <a href="http://punkave.com/"><img src="https://raw.github.com/punkave/jquery-bottomless/master/logos/logo-box-builtby.png" /></a>
