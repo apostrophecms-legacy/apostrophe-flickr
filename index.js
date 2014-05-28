@@ -38,7 +38,7 @@ function Construct(options, callback) {
   self.widget = true;
   self.label = options.label || 'Flickr Gallery';
   self.css = options.css || 'flickr';
-  self.icon = options.icon || 'flickr';
+  self.icon = options.icon || 'icon-flickr';
 
   self.sanitize = function(item) {
     // Check here for Flickery-ness of the url.
