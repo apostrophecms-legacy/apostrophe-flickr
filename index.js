@@ -36,7 +36,7 @@ function Construct(options, callback) {
   self.pushAsset('stylesheet', 'content', { when: 'always' });
 
   self.widget = true;
-  self.label = options.label || 'Flickr Gallery';
+  self.label = options.label || 'Flickr';
   self.css = options.css || 'flickr';
   self.icon = options.icon || 'icon-flickr';
 
