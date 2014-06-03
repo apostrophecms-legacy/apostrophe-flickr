@@ -80,10 +80,10 @@ function Construct(options, callback) {
     }
 
     flickr.get("photosets.getPhotos", {"photoset_id": item.setId, "extras": "url_l", "privacy_filter": "1", "per_page": item.limit}, function(result){
-      _.each(result.photoset.photo, function(photo){
-        var photoUrlString = (photo.url_l || "http://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg")
+      _.each((result && result.photoset && result.photoset.photo) || [], function(photo){
+        var photoUrlString = (photo.url_l || "http://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg");
         item._photos.push(photoUrlString);
-      })
+      });
       cache[key] = { when: now.getTime(), data: item._photos };
       return callback();
     });
