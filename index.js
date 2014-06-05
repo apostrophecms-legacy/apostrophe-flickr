@@ -79,6 +79,11 @@ function Construct(options, callback) {
       return callback();
     }
 
+    if (self._apos._aposLocals.offline) {
+      item._failed = true;
+      return callback(null);
+    }
+
     flickr.get("photosets.getPhotos", {"photoset_id": item.setId, "extras": "url_l", "privacy_filter": "1", "per_page": item.limit}, function(result){
       _.each((result && result.photoset && result.photoset.photo) || [], function(photo){
         var photoUrlString = (photo.url_l || "http://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg");
