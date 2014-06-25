@@ -1,6 +1,6 @@
 {
   "name": "apostrophe-flickr",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "Adds a Flickr set widget to the Apostrophe content management system",
   "main": "index.js",
   "scripts": {
