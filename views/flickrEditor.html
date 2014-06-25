@@ -1,17 +1,18 @@
 {% extends "baseWidgetEditor.html" %}
 {% include "formMacros.html" %}
 
-{% block widgetVars %}
-  {% set widgetClass = 'apos-flickr-editor apos-ui' %}
+{% block modalClass %}
+  {{ super() }} apos-flickr-editor
+{% endblock%}
+
+
+{% block modalLabel %}
+  {{ __('Select Flickr Set')}}
 {% endblock %}
 
-{% block title %}
-  Select Flickr Set
-{% endblock %}
-
-{% block instructions %}
-  Paste a URL for your Flickr Set.<br/>
-  <em>Ex: "https://www.flickr.com/photos/[USER_NAME]/sets/[SET_ID]/"</em>
+{% block modalInstructions %}
+  <p>{{ __('Paste a URL for your Flickr Set.<br/>
+  <em>Ex: "https://www.flickr.com/photos/[USER_NAME]/sets/[SET_ID]/"</em>')}}</p>
 {% endblock %}
 
 {% block formBody %}
