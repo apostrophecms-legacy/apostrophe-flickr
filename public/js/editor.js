@@ -32,7 +32,6 @@ function AposFlickrWidgetEditor(options) {
     }, 500);
   };
 
-  console.log(self);
 
   function getSet(callback) {
     self.exists = !!self.$setUrl.val();

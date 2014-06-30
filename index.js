@@ -1,7 +1,8 @@
-var Flickr = require('node-flickr');
+//var Flickr = require('flickrapi');
 var extend = require('extend');
 var _ = require('lodash');
 var cache = {};
+var request = require('request');
 
 module.exports = function(options, callback) {
   return new Construct(options, callback);
@@ -12,13 +13,18 @@ module.exports.Construct = Construct;
 function Construct(options, callback) {
   var apos = options.apos;
   var app = options.app;
-  var flickr = new Flickr({"api_key": options.flickrKey});
+
+  //var flickr = new Flickr({"api_key": options.flickrKey});
   var self = this;
   self._apos = apos;
   self._app = app;
   var lifetime = options.lifetime ? options.lifetime : (60000*20);
-
+  var flickrOptions = {
+    api_key: options.flickrKey,
+    secret: options.flickrSecret
+  }
   self._apos.mixinModuleAssets(self, 'flickr', __dirname, options);
+
 
   // This widget should be part of the default set of widgets for areas
   // (this isn't mandatory)
@@ -84,15 +90,28 @@ function Construct(options, callback) {
       return callback(null);
     }
 
-    flickr.get("photosets.getPhotos", {"photoset_id": item.setId, "extras": "url_l", "privacy_filter": "1", "per_page": item.limit}, function(result){
-      _.each((result && result.photoset && result.photoset.photo) || [], function(photo){
-        var photoUrlString = (photo.url_l || "http://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg");
-        item._photos.push(photoUrlString);
-      });
-      cache[key] = { when: now.getTime(), data: item._photos };
-      return callback();
-    });
+    // Let's build out the Flickr API request
+    var flickrUrl = "https://api.flickr.com/services/rest/?"
+                    + "&method=flickr.photosets.getPhotos"
+                    + "&api_key="+options.flickrKey
+                    + "&format=json&nojsoncallback=1"
+                    + "&photoset_id="+item.setId
+                    + "&extras=url_l"
+                    + "&privacy_filter=1"
+                    + "&per_page="+ item.limit;
 
+
+    request(flickrUrl, function(error, response, body){
+      if (!error && response.statusCode == 200) {
+        var flickrResponse = JSON.parse(body);
+        _.each((flickrResponse && flickrResponse.photoset && flickrResponse.photoset.photo) || [], function(photo){
+          var photoUrlString = (photo.url_l || "http://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg");
+          item._photos.push(photoUrlString);
+        });
+        cache[key] = { when: now.getTime(), data: item._photos };
+        return callback();
+      }
+    });
   };
 
   self._apos.addWidgetType('flickr', self);
