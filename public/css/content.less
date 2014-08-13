@@ -1,42 +1,32 @@
-/* Note heavy use of ems to make it easier to scale these down for preview */
 
-.apos-widget.apos-rss
+.apos-flickr-photos
 {
-  background-color: #eee;
-  text-align: left;
+  position: relative;
+  display: block;
+  max-width: 1140px;
+  margin: 0 auto;
 }
 
-.apos-rss-entries
+.apos-flickr-photo
 {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
   list-style: none;
-}
+  transition: opacity .3s ease-in-out;
+  -webkit-transition: opacity .3s ease-in-out;
+  -moz-transition: opacity .3s ease-in-out;
+  -ms-transition: opacity .3s ease-in-out;
 
-.apos-rss-entry
-{
-  padding: 0.5em;
-  border: 0.2em solid #ddd;
-  border-radius: 0.6em;
-  margin-bottom: 10px;
-}
+  &.apos-current
+  {
+    opacity: 1;
+  }
 
-.apos-rss-meta
-{
-  list-style: none;
-}
-
-.apos-rss-title
-{
-  font-size: 125%;
-}
-
-.apos-rss-date
-{
-  font-size: 75%;
-}
-
-.apos-rss-error
-{
-  background-color: #fee;
-  font-size: 125%;
-  padding: 0.5em;
+  .apos-flickr-image
+  {
+    max-width: 100%;
+    cursor: pointer;
+  }
 }

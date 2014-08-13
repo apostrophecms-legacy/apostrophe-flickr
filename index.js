@@ -39,6 +39,7 @@ function Construct(options, callback) {
   // We need the editor for RSS feeds. (TODO: consider separate script lists for
   // resources needed also by non-editing users.)
   self.pushAsset('script', 'editor', { when: 'user' });
+  self.pushAsset('script', 'content', { when: 'always' });
   self.pushAsset('stylesheet', 'content', { when: 'always' });
 
   self.widget = true;
@@ -58,23 +59,16 @@ function Construct(options, callback) {
     return self.render('flickr', data);
   };
 
-  self.load = function(req, item, callback) {
-    // (1) Figure out the setId number
-    // (2) Load photos based on that set.
+  app.get('/apos-flickr/feed', function(req, res){
+    var item = {};
 
-    item._photos = [];
-
-    //Why does my regex suck?
-    // TODO: check for bad stuff happening here.
-
-    var tempIdString = item.setUrl.match(/sets\/([0-9]+)/);
-    if (!tempIdString) {
+    if (!req.query.id) {
       item._failed = true;
-      return callback();
+      return res.send(404);
     }
-    item.setId = tempIdString[1];
-
-    //console.log("Cache is", cache);
+    item.setId = req.query.id;
+    item.limit = req.query.limit;
+    item._photos = [];
 
     var now = new Date();
     // Take all properties into account, not just the feed, so the cache
@@ -82,12 +76,12 @@ function Construct(options, callback) {
     var key = JSON.stringify({ setUrl: item.setUrl, limit: item.limit });
     if (cache.hasOwnProperty(key) && ((cache[key].when + lifetime) > now.getTime())) {
       item._photos = cache[key].data;
-      return callback();
+      return res.json(item._photos);
     }
 
     if (self._apos._aposLocals.offline) {
       item._failed = true;
-      return callback(null);
+      return res.send(404);
     }
 
     // Let's build out the Flickr API request
@@ -100,7 +94,6 @@ function Construct(options, callback) {
                     + "&privacy_filter=1"
                     + "&per_page="+ item.limit;
 
-
     request(flickrUrl, function(error, response, body){
       if (!error && response.statusCode == 200) {
         var flickrResponse = JSON.parse(body);
@@ -109,10 +102,87 @@ function Construct(options, callback) {
           item._photos.push(photoUrlString);
         });
         cache[key] = { when: now.getTime(), data: item._photos };
-        return callback();
+        return res.json(item._photos);
       }
     });
-  };
+  });
+
+  // // var now = new Date();
+  // // // Take all properties into account, not just the feed, so the cache
+  // // // doesn't prevent us from seeing a change in the limit property right away
+  // // var key = JSON.stringify({ setUrl: item.setUrl, limit: item.limit });
+  // // if (cache.hasOwnProperty(key) && ((cache[key].when + lifetime) > now.getTime())) {
+  // //   item._photos = cache[key].data;
+  // //   return callback();
+  // // }
+  // //
+  // // if (self._apos._aposLocals.offline) {
+  // //   item._failed = true;
+  // //   return callback(null);
+  // // }
+  /// Let's build out the Flickr API request
+  // // var flickrUrl = "https://api.flickr.com/services/rest/?"
+  // //                 + "&method=flickr.photosets.getPhotos"
+  // //                 + "&api_key="+options.flickrKey
+  // //                 + "&format=json&nojsoncallback=1"
+  // //                 + "&photoset_id="+item.setId
+  // //                 + "&extras=url_l"
+  // //                 + "&privacy_filter=1"
+  // //                 + "&per_page="+ item.limit;
+  //
+  //efla  unction(req, item, callback) {
+  //   // (1) Figure out the setId number
+  //   // (2) Load photos based on that set.
+  //
+  //  te._hoos= ];  //
+  //   /Whydoe myregx sck?  //   // TODO: check for bad stuff happening here.
+  //
+  //   var tepIdSring= itm.seUrl.atch(/sets\/([0-9]+)/);
+  //   if (!tempIdString) {
+  //     item._failed = true;
+  //     return callback();
+  //   }
+  //   item.setId = tempIdString[1];
+  //
+  //   //console.lo("Cace is" cach);
+  //
+  //   var now = new Date(;
+  //  // Tke allproperties into account, not just the feed, so the cache
+  //   // doesn't prevent us from seeing a change in the limit property right away
+  //   var key = JSON.stringify({ setUrl: item.setUrl, limit: item.limit });
+  //   if (cache.hasOwnProperty(key) && ((cache[key].when + lifetime) > now.getTime())) {
+  //     item._photos = cache[key].data;
+  //     return callback();
+  //   }
+  //
+  //   if (self._apos._aposLocals.ffline){
+  //    item._failed = true;
+  //     return callback(null);
+  //   }
+  //
+  //   // Let's build out the Flickr API reuest
+  //   var flickrUrl = "https://api.flickr.com/services/rest/?"
+  //                   + "&method=flickr.photosets.getPhotos"
+  //                   + "&api_key="+options.flickrKey
+  //                   + "&format=json&nojsoncallback=1"
+  //                   + "&photoset_id="+item.setId
+  //                   + "&extras=url_l"
+  //                   + "&privacy_filter=1"
+  //                   + "&per_page="+ item.limit;
+  //
+  //
+  //   request(flickrUrl, function(error, respone, body){
+  //     if (!error && response.statusCode == 200) {
+  //       var flickrResponse = JSON.parse(body);
+  //       _.each((flickrResponse && flickrResponse.photoset && flickrResponse.photoset.photo) || [], function(photo){
+  //         var photoUrlString = (photo.url_l || "http://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg");
+  //         item._photos.push(photoUrlString);
+  //       });
+  //       cache[key] = { when: now.getTime(), data: item._photos };
+  //       return callback();
+  //     }
+  //   });
+  // };
 
   self._apos.addWidgetType('flickr', self);
 

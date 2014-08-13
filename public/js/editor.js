@@ -25,10 +25,10 @@ function AposFlickrWidgetEditor(options) {
     self.$setUrl = self.$el.find('[name="set"]');
     self.$setUrl.val(self.data.setUrl);
     self.$limit = self.$el.find('[name="limit"]');
-    self.$limit.val(self.data.limit || 10);
+    self.$limit.val(self.data.limit || '');
     setTimeout(function() {
       self.$setUrl.focus();
-      self.$setUrl.setSelection(0, 0);
+      //self.$setUrl.setSelection(0, 0);
     }, 500);
   };
 

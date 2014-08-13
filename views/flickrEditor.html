@@ -22,21 +22,9 @@
     <input name="set" type="text" class="apos-flickr-set">
   </fieldset>
 
-  {{ formSelect('limit', 'Number of Photos:', [{value:1, label:"1"}, {value:5, label:"5"}, {value:10, label:"10"}, {value:20, label:"20"}] )}}
-
-
-{#   <fieldset class="apos-fieldset apos-fieldset-select apos-fieldset-flickr-limit" data-name="flickrLimit">
-    <label>Limit</label>
-    <div class="apos-select-wrapper">
-      <select name="limit" data-lister>
-        <option>1</option>
-        <option>3</option>
-        <option>5</option>
-        <option>10</option>
-        <option>20</option>
-      </select>
-      <div class="apos-select-arrow"></div>
-    </div>
-  </fieldset> #}
+  <fieldset class="apos-fieldset apos-fieldset-text apos-fieldset-apos-flickr-limit" data-name="flickrLimit">
+    <label>Number of Photos (leave blank for the fullset):</label>
+    <input name="limit" type="text" class="apos-input-narrow">
+  </fieldset>
 
 {% endblock %}
