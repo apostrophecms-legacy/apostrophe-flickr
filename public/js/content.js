@@ -35,6 +35,7 @@ apos.widgetPlayers.flickr = function($el) {
 
       function buildTemplate($template){
         $template.$image = $template.find('[data-apos-flickr-image]');
+        $template.$description = $template.find('[data-apos-flickr-description]');
         return $template;
       }
 
@@ -51,9 +52,16 @@ apos.widgetPlayers.flickr = function($el) {
           var $photo = cloneTemplate($photoTemplate);
 
           //Add Photo background and image src.
-          $photo.css('background-image', photo);
-          $photo.$image.attr('src', photo);
+          $photo.css('background-image', photo.url);
+          $photo.$image.attr('src', photo.url);
 
+          //Add Description if it's there
+          if(photo.description){
+            $photo.$description.text(photo.description);
+          } else {
+            $photo.$description.remove();
+          }
+          
           //If there's still a loader, kill it.
           $loader.remove();
 
