@@ -73,7 +73,7 @@ function Construct(options, callback) {
     var now = new Date();
     // Take all properties into account, not just the feed, so the cache
     // doesn't prevent us from seeing a change in the limit property right away
-    var key = JSON.stringify({ setUrl: item.setUrl, limit: item.limit });
+    var key = JSON.stringify({ setId: item.setId, limit: item.limit });
     if (cache.hasOwnProperty(key) && ((cache[key].when + lifetime) > now.getTime())) {
       item._photos = cache[key].data;
       return res.json(item._photos);
