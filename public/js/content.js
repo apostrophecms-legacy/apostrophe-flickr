@@ -2,19 +2,18 @@ apos.widgetPlayers.flickr = function($el) {
   var data = apos.getWidgetData($el);
 
   var getSetId = function(url){
-    var tempId = url.match(/sets\/([0-9]+)/);
+    var tempId;
+    tempId = url.match(/sets\/([0-9]+)/);
+    console.log(tempId);
     return tempId[1];
   }
-
-  var limit = data.limit;
-  var id = getSetId(data.setUrl);
 
   $.ajax({
     dataType: "json",
     url: '/apos-flickr/feed',
-    data: {id: id, limit: limit},
+    data: {id: getSetId(data.setUrl), limit: data.limit},
     success: function(photos){
-
+      console.log($el);
       //Define our photos object as well as the template and loader.
       var $photos = $el.find('[data-apos-flickr-photos]'),
           $photoTemplate = $photos.find('[data-template]'),
@@ -56,12 +55,12 @@ apos.widgetPlayers.flickr = function($el) {
           $photo.$image.attr('src', photo.url);
 
           //Add Description if it's there
-          if(photo.description){
-            $photo.$description.text(photo.description);
+          if(photo.description && photo.description._content && photo.description._content.length){
+            $photo.$description.text(photo.description._content);
           } else {
             $photo.$description.remove();
           }
-          
+
           //If there's still a loader, kill it.
           $loader.remove();
 
