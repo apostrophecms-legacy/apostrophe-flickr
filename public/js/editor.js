@@ -26,6 +26,8 @@ function AposFlickrWidgetEditor(options) {
     self.$setUrl.val(self.data.setUrl);
     self.$limit = self.$el.find('[name="limit"]');
     self.$limit.val(self.data.limit || '');
+    self.$showDescription = self.$el.find('[name="showDescription"]');
+    self.$showDescription.val(self.data.showDescription || '');
     setTimeout(function() {
       self.$setUrl.focus();
       //self.$setUrl.setSelection(0, 0);
@@ -38,6 +40,7 @@ function AposFlickrWidgetEditor(options) {
     if (self.exists) {
       self.data.setUrl = self.$setUrl.val();
       self.data.limit = self.$limit.val();
+      self.data.showDescription = self.$showDescription.val();
     }
     if (!self.$setUrl.val().match(/sets\/([0-9]+)/)) {
       return alert(options.messages.incorrect);

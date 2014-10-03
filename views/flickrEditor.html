@@ -27,4 +27,11 @@
     <input name="limit" type="text" class="apos-input-narrow">
   </fieldset>
 
+  <fieldset class="apos-fieldset apos-fieldset-select apos-fieldset-text apos-fieldset-selectize apos-fieldset-apos-flickr-descriptions" data-name="flickrLimit">
+    <label>Show Descriptions?</label>
+    <div class="apos-select-wrapper apos-inline-input">
+      {{formSelectStandalone('showDescription', [{'label': 'Yes', 'value': true}, {'label': 'No', 'value': false}], {})}}
+    </div>
+  </fieldset>
+
 {% endblock %}

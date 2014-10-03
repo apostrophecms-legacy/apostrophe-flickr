@@ -68,12 +68,13 @@ function Construct(options, callback) {
     }
     item.setId = req.query.id;
     item.limit = req.query.limit;
+    item.showDescription = req.query.showDescription
     item._photos = [];
 
     var now = new Date();
     // Take all properties into account, not just the feed, so the cache
     // doesn't prevent us from seeing a change in the limit property right away
-    var key = JSON.stringify({ setId: item.setId, limit: item.limit });
+    var key = JSON.stringify({ setId: item.setId, limit: item.limit, showDescrption: item.showDescription });
     if (cache.hasOwnProperty(key) && ((cache[key].when + lifetime) > now.getTime())) {
       item._photos = cache[key].data;
       return res.json(item._photos);
@@ -99,7 +100,13 @@ function Construct(options, callback) {
         var flickrResponse = JSON.parse(body);
         _.each((flickrResponse && flickrResponse.photoset && flickrResponse.photoset.photo) || [], function(photo){
           var photoUrlString = (photo.url_l || "http://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg");
-          item._photos.push({url: photoUrlString, description: photo.description});
+          var photoObj;
+          if (item.showDescription){
+            photoObj = {url: photoUrlString, description: photo.description};
+          } else {
+            photoObj = {url: photoUrlString}
+          }
+          item._photos.push(photoObj);
         });
         cache[key] = { when: now.getTime(), data: item._photos };
         return res.json(item._photos);
