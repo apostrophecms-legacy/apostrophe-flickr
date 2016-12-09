@@ -21,7 +21,8 @@ function Construct(options, callback) {
   var lifetime = options.lifetime ? options.lifetime : (60000*20);
   var flickrOptions = {
     api_key: options.flickrKey,
-    secret: options.flickrSecret
+    secret: options.flickrSecret,
+    size: options.size
   }
   self._apos.mixinModuleAssets(self, 'flickr', __dirname, options);
 
@@ -59,6 +60,34 @@ function Construct(options, callback) {
     return self.render('flickr', data);
   };
 
+  self.setSize = function(sizeName){
+    var sizeUrl;
+    if(sizeName === 'Square'){
+      sizeUrl = '_s';
+    } else if (sizeName === 'Large Square'){
+      sizeUrl = '_q';
+    } else if (sizeName === 'Thumbnail'){
+      sizeUrl = '_t';
+    } else if (sizeName === 'Small'){
+      sizeUrl = '_m';
+    } else if (sizeName === 'Small 320'){
+      sizeUrl = '_n';
+    } else if (sizeName === 'Medium'){
+      sizeUrl = '';
+    } else if (sizeName === 'Medium 640'){
+      sizeUrl = '_z';
+    } else if (sizeName === 'Medium 800'){
+      sizeUrl = '_c';
+    } else if (sizeName === 'Large'){
+      sizeUrl = '_b';
+    } else if (sizeName === 'Original'){
+      sizeUrl = '_o';
+    } else {
+      sizeUrl = '';
+    }
+    return sizeUrl;
+  }
+
   app.get('/apos-flickr/feed', function(req, res){
     var item = {};
 
@@ -91,7 +120,7 @@ function Construct(options, callback) {
                     + "&api_key="+options.flickrKey
                     + "&format=json&nojsoncallback=1"
                     + "&photoset_id="+item.setId
-                    + "&extras=url_l,description"
+                    + "&extras=url_m,description"
                     + "&privacy_filter=1"
                     + "&per_page="+ item.limit;
 
@@ -99,7 +128,7 @@ function Construct(options, callback) {
       if (!error && response.statusCode == 200) {
         var flickrResponse = JSON.parse(body);
         _.each((flickrResponse && flickrResponse.photoset && flickrResponse.photoset.photo) || [], function(photo){
-          var photoUrlString = (photo.url_l || "http://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+".jpg");
+          var photoUrlString = (photo.url_l || "http://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+ self.setSize(options.size)+".jpg");
           var photoObj;
           if (item.showDescription){
             photoObj = {url: photoUrlString, description: photo.description};
