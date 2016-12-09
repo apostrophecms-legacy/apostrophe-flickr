@@ -50,7 +50,7 @@ function Construct(options, callback) {
   self.sanitize = function(item) {
     // Check here for Flickery-ness of the url.
     if (!item.setUrl.match(/^https?\:\/\//)) {
-      item.setUrl = 'http://' + item.setUrl;
+      item.setUrl = 'https://' + item.setUrl;
     }
     item.limit = parseInt(item.limit, 10);
   };
