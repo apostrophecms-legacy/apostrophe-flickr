@@ -128,7 +128,7 @@ function Construct(options, callback) {
       if (!error && response.statusCode == 200) {
         var flickrResponse = JSON.parse(body);
         _.each((flickrResponse && flickrResponse.photoset && flickrResponse.photoset.photo) || [], function(photo){
-          var photoUrlString = (photo.url_l || "http://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+ self.setSize(options.size)+".jpg");
+          var photoUrlString = (photo.url_l || "https://farm"+photo.farm+".staticflickr.com/"+photo.server+"/"+photo.id+"_"+photo.secret+ self.setSize(options.size)+".jpg");
           var photoObj;
           if (item.showDescription){
             photoObj = {url: photoUrlString, description: photo.description};
