@@ -1,3 +1,7 @@
+# ⛔️ **DEPRECATED** — do not use for new projects
+
+See [our current docs](https://docs.apostrophecms.org/)
+
 # apostrophe-flickr
 [![NPM](https://nodei.co/npm/apostrophe-flickr.png?downloads=true)](https://nodei.co/npm/apostrophe-flickr/)
 
